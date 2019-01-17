@@ -70,7 +70,7 @@ module.exports.parse = async (dtconfig, spec) => {
         comparison: "fixed",
         threshold: thresholds.lowerSevere,
         score: metric.metricScore,
-        // raw: stats,
+        raw: stats,
       });
     } else if (thresholds.lowerWarning && stats.min.value <= thresholds.lowerWarning) {
       hasViolation = true;
@@ -84,7 +84,7 @@ module.exports.parse = async (dtconfig, spec) => {
         comparison: "fixed",
         threshold: thresholds.lowerWarning,
         score: metric.metricScore,
-        // raw: stats,
+        raw: stats,
       });
     }
 
@@ -100,7 +100,7 @@ module.exports.parse = async (dtconfig, spec) => {
         comparison: "fixed",
         threshold: thresholds.upperSevere,
         score: metric.metricScore,
-        // raw: stats,
+        raw: stats,
       });
     } else if (thresholds.upperWarning && stats.max.value >= thresholds.upperWarning) {
       hasViolation = true;
@@ -114,7 +114,7 @@ module.exports.parse = async (dtconfig, spec) => {
         comparison: "fixed",
         threshold: thresholds.upperWarning,
         score: metric.metricScore,
-        // raw: stats,
+        raw: stats,
       });
     }
 
