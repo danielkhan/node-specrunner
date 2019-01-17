@@ -20,7 +20,7 @@ module.exports.parse = async (dtconfig, spec) => {
     }
     params.relativeTime = "day";
     params.entities = query.entityIds;
-    params.tag = query.tags;
+    params.tags = query.tags;
     params.queryMode = "TOTAL";
     try {
       const timeseries = await dynatrace.timeseries(query.timeseriesId, params);
@@ -60,7 +60,6 @@ module.exports.parse = async (dtconfig, spec) => {
     const violations = [];
     const thresholds = metric.thresholds;
     if (!thresholds) return false;
-
 
     if (thresholds.lowerSevere && stats[0][1] <= thresholds.lowerSevere) {
       hasViolation = true;
