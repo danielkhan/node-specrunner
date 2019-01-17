@@ -51,12 +51,12 @@ module.exports.parse = async (dtconfig, spec) => {
   }
 
   function analyze(source, metric, stats) {
+
     // const query = source.query;
     let hasViolation = false;
     const violations = [];
     const thresholds = metric.thresholds;
     if (!thresholds) return false;
-
 
     if (thresholds.lowerSevere && stats.min.value <= thresholds.lowerSevere) {
       hasViolation = true;
@@ -134,6 +134,7 @@ module.exports.parse = async (dtconfig, spec) => {
             if (analyzeResult) {
               return {
                 id: key,
+                name: stats[key].meta.displayName,
                 metrics: analyzeResult
               };
             }

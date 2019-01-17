@@ -85,6 +85,6 @@
     "typescript": "^2.9.2"
   },
   "dependencies": {
-    "@dynatrace/api-client": "^2.1.2"
+    "@dynatrace/api-client": "^2.1.3"
   }
 }
