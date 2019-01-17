@@ -21,10 +21,12 @@ module.exports.parse = async (dtconfig, spec) => {
     params.relativeTime = "day";
     params.entities = query.entityIds;
     params.tag = query.tags;
+    params.queryMode = "TOTAL";
     try {
       const timeseries = await dynatrace.timeseries(query.timeseriesId, params);
-      const stats = TimeSeries.stats(timeseries);
-      return stats;
+      // console.log(timeseries);
+      // const stats = TimeSeries.stats(timeseries);
+      return timeseries;
 
     } catch (err) {
       console.error(err);
@@ -50,7 +52,8 @@ module.exports.parse = async (dtconfig, spec) => {
     return sources;
   }
 
-  function analyze(source, metric, stats) {
+  function analyze(source, metric, stats, unit, aggregation) {
+
 
     // const query = source.query;
     let hasViolation = false;
@@ -58,28 +61,28 @@ module.exports.parse = async (dtconfig, spec) => {
     const thresholds = metric.thresholds;
     if (!thresholds) return false;
 
-    if (thresholds.lowerSevere && stats.min.value <= thresholds.lowerSevere) {
+    if (thresholds.lowerSevere && stats[1] <= thresholds.lowerSevere) {
       hasViolation = true;
       violations.push({
         id: metric.metricsId,
         name: source.name,
-        aggregation: stats.meta.aggregationType,
-        value: stats.min.value,
-        unit: stats.meta.unit,
+        aggregation,
+        value: stats[1],
+        unit,
         breach: "lower_critical",
         comparison: "fixed",
         threshold: thresholds.lowerSevere,
         score: metric.metricScore,
         raw: stats,
       });
-    } else if (thresholds.lowerWarning && stats.min.value <= thresholds.lowerWarning) {
+    } else if (thresholds.lowerWarning && stats[1] <= thresholds.lowerWarning) {
       hasViolation = true;
       violations.push({
         id: metric.metricsId,
         name: source.name,
-        aggregation: stats.meta.aggregationType,
-        value: stats.min.value,
-        unit: stats.meta.unit,
+        aggregation,
+        value: stats[1],
+        unit,
         breach: "lower_warning",
         comparison: "fixed",
         threshold: thresholds.lowerWarning,
@@ -88,28 +91,28 @@ module.exports.parse = async (dtconfig, spec) => {
       });
     }
 
-    if (thresholds.upperSevere && stats.max.value >= thresholds.upperSevere) {
+    if (thresholds.upperSevere && stats[1] >= thresholds.upperSevere) {
       hasViolation = true;
       violations.push({
         id: metric.metricsId,
         name: source.name,
-        aggregation: stats.meta.aggregationType,
-        value: stats.max.value,
-        unit: stats.meta.unit,
+        aggregation,
+        value: stats[1],
+        unit,
         breach: "upper_critical",
         comparison: "fixed",
         threshold: thresholds.upperSevere,
         score: metric.metricScore,
         raw: stats,
       });
-    } else if (thresholds.upperWarning && stats.max.value >= thresholds.upperWarning) {
+    } else if (thresholds.upperWarning && stats[1] >= thresholds.upperWarning) {
       hasViolation = true;
       violations.push({
         id: metric.metricsId,
         name: source.name,
-        aggregation: stats.meta.aggregationType,
-        value: stats.max.value,
-        unit: stats.meta.unit,
+        aggregation,
+        value: stats[1],
+        unit,
         breach: "upper_warning",
         comparison: "fixed",
         threshold: thresholds.upperWarning,
@@ -128,18 +131,19 @@ module.exports.parse = async (dtconfig, spec) => {
       // Todo: find out how to do percentiles on API
       if (sourceDefinition.query && sourceDefinition.query.timeseriesId && sourceDefinition.query.aggregation != "p90") {
         const stats = await fetchStats(sourceDefinition.query);
-        if (stats && stats.constructor === Object && Object.keys(stats).length !== 0) {
-          return Object.keys(stats).map((key) => {
-            const analyzeResult = analyze(sourceDefinition, metric, stats[key]);
-            if (analyzeResult) {
-              return {
-                id: key,
-                name: stats[key].meta.displayName,
-                metrics: analyzeResult
-              };
-            }
-          }).filter(x => x);
-        }
+
+
+        return Object.keys(stats.dataPoints).map((key) => {
+          const analyzeResult = analyze(sourceDefinition, metric, stats.dataPoints[key], stats.unit, stats.aggregationType);
+          if (analyzeResult) {
+            return {
+              id: key,
+              name: stats.entities[key],
+              metrics: analyzeResult
+            };
+          }
+        }).filter(x => x);
+
       }
     }).filter(x => x);
   }
