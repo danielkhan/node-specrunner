@@ -1,0 +1,90 @@
+{
+  "name": "@dynatrace/specrunner",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danielkhan/node-specrunner"
+  },
+  "version": "0.0.0",
+  "description": "A Node.js package for executing monitoring specs",
+  "main": "./src/index.js",
+  "scripts": {},
+  "babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "targets": {
+            "node": "6.10"
+          }
+        }
+      ]
+    ]
+  },
+  "eslintConfig": {
+    "env": {
+      "es6": true,
+      "node": true
+    },
+    "extends": [
+      "eslint:recommended"
+    ],
+    "rules": {
+      "indent": [
+        "error",
+        2
+      ],
+      "linebreak-style": [
+        "error",
+        "unix"
+      ],
+      "quotes": [
+        "error",
+        "double"
+      ],
+      "semi": [
+        "error",
+        "always"
+      ]
+    },
+    "globals": {
+      "it": true,
+      "expect": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2017
+    }
+  },
+  "keywords": [
+    "dynatrace",
+    "apm",
+    "rest",
+    "api"
+  ],
+  "author": "Daniel Dyla <daniel.dyla@dynatrace.com>",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/jest": "^22.1.4",
+    "@types/nock": "^9.1.2",
+    "@types/node": "^9.4.6",
+    "@types/request-promise": "^4.1.41",
+    "eslint": "^4.17.0",
+    "eslint-plugin-jest": "^21.12.1",
+    "ink-docstrap": "^1.3.2",
+    "jest": "^23.1.0",
+    "jsdoc": "^3.5.5",
+    "jsdoc-to-markdown": "^4.0.1",
+    "nock": "^9.1.6",
+    "prettier": "^1.12.1",
+    "ts-jest": "^22.4.6",
+    "ts-node": "^5.0.1",
+    "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.10.0",
+    "typedoc": "^0.11.0",
+    "typedoc-plugin-external-module-name": "^1.1.1",
+    "typescript": "^2.9.2"
+  },
+  "dependencies": {
+    "@dynatrace/api-client": "^2.1.2"
+  }
+}

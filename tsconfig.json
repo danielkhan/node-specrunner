@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "target": "es5",
+    "noImplicitReturns": true,
+    "noImplicitAny": true,
+    "alwaysStrict": true,
+    "strict": true,
+    "declaration": true,
+    "lib": ["es2015"]
+  },
+  "include": ["./src/"],
+  "exclude": ["./src/**/__tests__/"]
+}
