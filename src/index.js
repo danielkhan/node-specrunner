@@ -61,13 +61,14 @@ module.exports.parse = async (dtconfig, spec) => {
     const thresholds = metric.thresholds;
     if (!thresholds) return false;
 
-    if (thresholds.lowerSevere && stats[1] <= thresholds.lowerSevere) {
+
+    if (thresholds.lowerSevere && stats[0][1] <= thresholds.lowerSevere) {
       hasViolation = true;
       violations.push({
         id: metric.metricsId,
         name: source.name,
         aggregation,
-        value: stats[1],
+        value: stats[0][1],
         unit,
         breach: "lower_critical",
         comparison: "fixed",
@@ -75,13 +76,13 @@ module.exports.parse = async (dtconfig, spec) => {
         score: metric.metricScore,
         raw: stats,
       });
-    } else if (thresholds.lowerWarning && stats[1] <= thresholds.lowerWarning) {
+    } else if (thresholds.lowerWarning && stats[0][1] <= thresholds.lowerWarning) {
       hasViolation = true;
       violations.push({
         id: metric.metricsId,
         name: source.name,
         aggregation,
-        value: stats[1],
+        value: stats[0][1],
         unit,
         breach: "lower_warning",
         comparison: "fixed",
@@ -91,13 +92,13 @@ module.exports.parse = async (dtconfig, spec) => {
       });
     }
 
-    if (thresholds.upperSevere && stats[1] >= thresholds.upperSevere) {
+    if (thresholds.upperSevere && stats[0][1] >= thresholds.upperSevere) {
       hasViolation = true;
       violations.push({
         id: metric.metricsId,
         name: source.name,
         aggregation,
-        value: stats[1],
+        value: stats[0][1],
         unit,
         breach: "upper_critical",
         comparison: "fixed",
@@ -105,13 +106,13 @@ module.exports.parse = async (dtconfig, spec) => {
         score: metric.metricScore,
         raw: stats,
       });
-    } else if (thresholds.upperWarning && stats[1] >= thresholds.upperWarning) {
+    } else if (thresholds.upperWarning && stats[0][1] >= thresholds.upperWarning) {
       hasViolation = true;
       violations.push({
         id: metric.metricsId,
         name: source.name,
         aggregation,
-        value: stats[1],
+        value: stats[0][1],
         unit,
         breach: "upper_warning",
         comparison: "fixed",
