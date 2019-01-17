@@ -57,7 +57,8 @@ module.exports.parse = async (dtconfig, spec) => {
     const thresholds = metric.thresholds;
     if (!thresholds) return false;
 
-    if (thresholds.lowerSevere && stats.min <= thresholds.lowerSevere) {
+
+    if (thresholds.lowerSevere && stats.min.value <= thresholds.lowerSevere) {
       hasViolation = true;
       violations.push({
         id: metric.metricsId,
@@ -71,7 +72,7 @@ module.exports.parse = async (dtconfig, spec) => {
         score: metric.metricScore,
         // raw: stats,
       });
-    } else if (thresholds.lowerWarning && stats.min <= thresholds.lowerWarning) {
+    } else if (thresholds.lowerWarning && stats.min.value <= thresholds.lowerWarning) {
       hasViolation = true;
       violations.push({
         id: metric.metricsId,
@@ -87,7 +88,7 @@ module.exports.parse = async (dtconfig, spec) => {
       });
     }
 
-    if (thresholds.upperSevere && stats.max >= thresholds.upperSevere) {
+    if (thresholds.upperSevere && stats.max.value >= thresholds.upperSevere) {
       hasViolation = true;
       violations.push({
         id: metric.metricsId,
@@ -101,7 +102,7 @@ module.exports.parse = async (dtconfig, spec) => {
         score: metric.metricScore,
         // raw: stats,
       });
-    } else if (thresholds.upperWarning && stats.max >= thresholds.upperWarning) {
+    } else if (thresholds.upperWarning && stats.max.value >= thresholds.upperWarning) {
       hasViolation = true;
       violations.push({
         id: metric.metricsId,
